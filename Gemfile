@@ -3,21 +3,25 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.2.0'
 
+# DB
 gem 'pg'
 
-gem 'phantomjs'
+# User Authentication
+gem 'devise'
 
+# Agents
+gem 'phantomjs'
+gem 'sidekiq'
+
+# API
 gem 'active_model_serializers'
 gem 'kaminari'
 
+# Frontend
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
-
-gem 'sidekiq'
-
 gem 'jquery-rails'
 gem 'turbolinks'
-gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
