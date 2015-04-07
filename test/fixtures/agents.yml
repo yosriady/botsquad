@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  interval: 1
+  type: 1
+  user_id: 1
+  payload: 
+  description: MyString
+  name: MyString
+
+two:
+  interval: 1
+  type: 1
+  user_id: 1
+  payload: 
+  description: MyString
+  name: MyString

@@ -7,6 +7,9 @@ gem 'pg'
 
 gem 'phantomjs'
 
+gem 'active_model_serializers'
+gem 'kaminari'
+
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 
