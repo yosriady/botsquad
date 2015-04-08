@@ -1,5 +1,6 @@
 class API::V1::AgentsController < API::APIController
   before_action :set_agent, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate
 
   # GET /agents
   def index

@@ -2,16 +2,16 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable,
+         :lockable
+  before_create :generate_api_key
 
-  before_create do |user|
-    user.api_key = user.generate_api_key
-  end
+  protected
 
-  def self.generate_api_key
-    loop do
-      token = SecureRandom.base64.tr('+/=', 'Qrt')
-      break token unless User.exists?(api_key: token).any?
+  def generate_api_key
+    self.api_key = loop do
+      random_token = SecureRandom.urlsafe_base64(24, false)
+      break random_token unless self.class.exists?(api_key: random_token)
     end
   end
 end

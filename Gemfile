@@ -1,7 +1,7 @@
 ruby '2.2.0'
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.0'
+gem 'rails', '4.2.1'
 
 # DB
 gem 'pg'
@@ -26,11 +26,16 @@ gem 'turbolinks'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-group :development, :test do
+group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'letter_opener'
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'spring'
+end
+
+group :development, :test do
+  gem 'dotenv-rails'
 end
 
