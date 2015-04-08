@@ -13,6 +13,9 @@ gem 'devise'
 gem 'phantomjs'
 gem 'sidekiq'
 
+# Agent Supporting Libs
+# gem 'diffy'
+
 # API
 gem 'active_model_serializers'
 gem 'kaminari'
