@@ -19,6 +19,7 @@ gem 'sidekiq'
 # API
 gem 'active_model_serializers'
 gem 'kaminari'
+gem 'friendly_id'
 
 # Frontend
 gem 'bootstrap-sass'

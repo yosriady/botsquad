@@ -4,7 +4,7 @@ class API::V1::AgentsController < API::APIController
 
   # GET /agents
   def index
-    @agents = Agent.page(params[:page])
+    @agents = @user.agents.page(params[:page])
     render json: @agents
   end
 
@@ -13,9 +13,21 @@ class API::V1::AgentsController < API::APIController
     render json: @agent
   end
 
+  # GET /agents/1/webhooks
+  def webhooks
+    @webhooks = @agent.webhooks
+    render json: @webhooks
+  end
+
+  # GET /agents/1/runs
+  def runs
+    @runs = @agent.runs
+    render json: @runs
+  end
+
   # GET /agents/new
   def new
-    @agent = Agent.new
+    @agent = @user.agents.new
   end
 
   # GET /agents/1/edit
@@ -24,7 +36,7 @@ class API::V1::AgentsController < API::APIController
 
   # POST /agents
   def create
-    @agent = Agent.new(agent_params)
+    @agent = @user.agents.new(agent_params)
 
     if @agent.save
       render json: @agent, status: 200, notice: 'Agent was successfully updated.'

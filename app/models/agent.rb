@@ -5,6 +5,7 @@ class Agent < ActiveRecord::Base
 
   belongs_to :user
   has_many :runs
+  has_many :webhooks
 
   def execute
     # TODO: enqueue job
