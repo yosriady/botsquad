@@ -13,11 +13,6 @@ class API::V1::WebhooksController < ApplicationController
     render json: @webhook
   end
 
-  # GET /webhooks/new
-  def new
-    @webhook = Webhook.new
-  end
-
   # POST /webhooks
   def create
     @webhook = Webhook.new(webhook_params)

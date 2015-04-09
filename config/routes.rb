@@ -2,13 +2,13 @@ Rails.application.routes.draw do
   devise_for :users
   namespace :api, defaults: {format: 'json'}, path: "", constraints: {subdomain: "api"} do
     namespace :v1 do
-      resources :agents do
+      resources :agents, only: [:index, :show, :create, :update, :destroy] do
         member do
           get 'webhooks'
           get 'runs'
         end
       end
-      resources :webhooks, except: [:edit, :update]
+      resources :webhooks, only: [:index, :show, :create, :destroy]
       resources :runs, only: [:index, :show, :create]
     end
   end

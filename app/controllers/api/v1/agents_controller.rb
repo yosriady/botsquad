@@ -1,5 +1,5 @@
 class API::V1::AgentsController < API::APIController
-  before_action :set_agent, only: [:show, :edit, :update, :destroy]
+  before_action :set_agent, only: [:show, :update, :destroy]
   before_action :authenticate
 
   # GET /agents
@@ -23,15 +23,6 @@ class API::V1::AgentsController < API::APIController
   def runs
     @runs = @agent.runs
     render json: @runs
-  end
-
-  # GET /agents/new
-  def new
-    @agent = @user.agents.new
-  end
-
-  # GET /agents/1/edit
-  def edit
   end
 
   # POST /agents
