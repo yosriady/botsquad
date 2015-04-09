@@ -66,7 +66,7 @@ class API::V1::AgentsController < API::APIController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_agent
-      @agent = Agent.find(params[:id])
+      @agent = Agent.friendly.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

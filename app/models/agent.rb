@@ -3,6 +3,9 @@ class Agent < ActiveRecord::Base
   enum interval: %w( week day hour )
   enum type: %w( uptime screenshot )
 
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   belongs_to :user
   has_many :runs
   has_many :webhooks
