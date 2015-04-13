@@ -1,4 +1,4 @@
-class API::V1::WebhooksController < ApplicationController
+class API::V1::WebhooksController < API::BaseController
   before_action :set_webhook, only: [:show, :destroy]
   before_action :authenticate
 

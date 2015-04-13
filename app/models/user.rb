@@ -8,7 +8,6 @@ class User < ActiveRecord::Base
          :lockable
   before_create :generate_api_key
 
-
   protected
 
   def generate_api_key

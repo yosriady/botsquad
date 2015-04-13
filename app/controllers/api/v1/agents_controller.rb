@@ -1,4 +1,4 @@
-class API::V1::AgentsController < API::APIController
+class API::V1::AgentsController < API::BaseController
   before_action :set_agent, only: [:show, :update, :destroy]
   before_action :authenticate
 

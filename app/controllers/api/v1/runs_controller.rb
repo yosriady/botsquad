@@ -1,4 +1,4 @@
-class API::V1::RunsController < ApplicationController
+class API::V1::RunsController < API::BaseController
   before_action :set_run, only: [:show]
   before_action :authenticate
 
