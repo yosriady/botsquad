@@ -9,10 +9,14 @@ html {
 #header {
   padding: 50px;
 
-  h1 {
+  h1, h2 {
     margin-top: 0px;
+  }
+
+  h1 {
     font-weight: 700;
     line-height: 1.25;
+    font-size: 54px;
     color: #0f90fa;
 
     small {
@@ -29,7 +33,6 @@ html {
 
   h2 {
     font-weight: 200;
-    padding-bottom: 40px;
     color: #333;
   }
 }

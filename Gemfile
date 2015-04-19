@@ -6,6 +6,9 @@ gem 'rails', '4.2.1'
 # DB
 gem 'pg'
 
+# Application Server
+gem 'passenger'
+
 # User Authentication
 gem 'devise'
 
