@@ -21,6 +21,9 @@ gem 'active_model_serializers'
 gem 'kaminari'
 gem 'friendly_id'
 
+# Validations
+gem 'validates_email_format_of'
+
 # Frontend
 gem 'bootstrap-sass', '~> 3.3.4'
 gem 'sass-rails', '~> 5.0'
