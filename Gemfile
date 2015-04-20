@@ -12,6 +12,9 @@ gem 'passenger'
 # User Authentication
 gem 'devise'
 
+# Errors
+gem 'raygun4ruby'
+
 # Agents
 gem 'phantomjs'
 gem 'sidekiq'
