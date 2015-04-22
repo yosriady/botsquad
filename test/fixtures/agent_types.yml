@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  payload_format: 
+  result_format: 
+  description: MyString
+
+two:
+  payload_format: 
+  result_format: 
+  description: MyString

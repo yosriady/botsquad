@@ -55,7 +55,6 @@ class API::V1::AgentsController < API::BaseController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_agent
       @agent = Agent.friendly.find(params[:id])
     end

@@ -1,4 +1,5 @@
 class API::V1::RunsController < API::BaseController
+  before_action :set_agent
   before_action :set_run, only: [:show]
   before_action :authenticate
 
@@ -13,20 +14,13 @@ class API::V1::RunsController < API::BaseController
     render json: @run
   end
 
-  # POST /runs
-  def create
-    @run = Run.new(run_params)
-
-    if @run.save
-      render json: @run, status: 200, notice: 'Run was successfully updated.'
-    else
-      render status: 422
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_run
       @run = Run.find(params[:id])
+    end
+
+    def set_agent
+      @agent = Agent.friendly.find(params[:agent_id])
     end
 end

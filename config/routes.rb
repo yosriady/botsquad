@@ -4,12 +4,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :agents, only: [:index, :show, :create, :update, :destroy] do
         member do
-          get 'webhooks'
-          get 'runs'
+          resources :webhooks, only: [:index, :create, :show, :destroy]
+          resources :runs, only: [:index, :show]
         end
       end
-      resources :webhooks, only: [:index, :show, :create, :destroy]
-      resources :runs, only: [:index, :show, :create]
+      resources :agent_types, only: [:index, :show]
     end
   end
 

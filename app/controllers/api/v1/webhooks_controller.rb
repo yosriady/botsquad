@@ -1,4 +1,5 @@
 class API::V1::WebhooksController < API::BaseController
+  before_action :set_agent
   before_action :set_webhook, only: [:show, :destroy]
   before_action :authenticate
 
@@ -37,6 +38,10 @@ class API::V1::WebhooksController < API::BaseController
     # Use callbacks to share common setup or constraints between actions.
     def set_webhook
       @webhook = Webhook.find(params[:id])
+    end
+
+    def set_agent
+      @agent = Agent.friendly.find(params[:agent_id])
     end
 
     # Only allow a trusted parameter "white list" through.

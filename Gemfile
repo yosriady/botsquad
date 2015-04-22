@@ -27,6 +27,9 @@ gem 'active_model_serializers'
 gem 'kaminari'
 gem 'friendly_id'
 
+# Active Record
+gem 'obfuscate_id'
+
 # Validations
 gem 'validates_email_format_of'
 
