@@ -1,4 +1,4 @@
-class API::V1::AgentTypeController < API::BaseController
+class API::V1::AgentTypesController < API::BaseController
   before_action :set_agent_type, only: [:show]
   # GET /agent-types
   def index

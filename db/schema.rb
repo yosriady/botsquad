@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422163755) do
+ActiveRecord::Schema.define(version: 20150422175128) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,14 @@ ActiveRecord::Schema.define(version: 20150422163755) do
   end
 
   add_index "agents", ["slug"], name: "index_agents_on_slug", unique: true, using: :btree
+
+  create_table "events", force: :cascade do |t|
+    t.integer  "run_id",                 null: false
+    t.integer  "status",     default: 0, null: false
+    t.integer  "webhook_id",             null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
