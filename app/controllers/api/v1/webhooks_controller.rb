@@ -5,8 +5,7 @@ class API::V1::WebhooksController < API::BaseController
 
   # GET /webhooks
   def index
-    @webhooks = Webhook.page(params[:page])
-    render json: @webhooks
+    render json: @agent.webhooks
   end
 
   # GET /webhooks/1
@@ -41,7 +40,7 @@ class API::V1::WebhooksController < API::BaseController
     end
 
     def set_agent
-      @agent = Agent.friendly.find(params[:agent_id])
+      @agent = Agent.friendly.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

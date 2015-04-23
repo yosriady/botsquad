@@ -11,33 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422175128) do
+ActiveRecord::Schema.define(version: 20150423162412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "agent_types", force: :cascade do |t|
-    t.string   "name",           null: false
-    t.string   "description",    null: false
-    t.string   "slug"
-    t.json     "payload_format", null: false
-    t.json     "result_format",  null: false
-    t.string   "job_type",       null: false
-    t.string   "script_path",    null: false
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.string   "name",            limit: 255, null: false
+    t.string   "description",                 null: false
+    t.string   "slug",            limit: 255, null: false
+    t.json     "sample_payload",              null: false
+    t.json     "sample_response",             null: false
+    t.string   "job_type",                    null: false
+    t.string   "script_path",                 null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "agents", force: :cascade do |t|
-    t.string   "name",                      null: false
-    t.integer  "interval",      default: 0, null: false
-    t.integer  "user_id"
+    t.string   "name",          limit: 255,             null: false
+    t.integer  "interval",                  default: 0, null: false
+    t.integer  "user_id",                               null: false
     t.json     "payload"
     t.string   "description"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.string   "slug"
-    t.integer  "agent_type_id",             null: false
+    t.integer  "agent_type_id",                         null: false
   end
 
   add_index "agents", ["slug"], name: "index_agents_on_slug", unique: true, using: :btree
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 20150422175128) do
   create_table "runs", force: :cascade do |t|
     t.integer  "status",     default: 0, null: false
     t.integer  "agent_id",               null: false
-    t.json     "result"
+    t.json     "response"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end

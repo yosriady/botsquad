@@ -1,5 +1,5 @@
 class API::V1::AgentsController < API::BaseController
-  before_action :set_agent, only: [:show, :update, :destroy]
+  before_action :set_agent, only: [:show, :webhooks, :runs, :update, :destroy]
   before_action :authenticate
 
   # GET /agents
@@ -27,6 +27,7 @@ class API::V1::AgentsController < API::BaseController
 
   # POST /agents
   def create
+    binding.pry
     @agent = @user.agents.new(agent_params)
 
     if @agent.save
@@ -61,6 +62,7 @@ class API::V1::AgentsController < API::BaseController
 
     # Only allow a trusted parameter "white list" through.
     def agent_params
-      params.require(:agent).permit(:interval, :type, :user_id, :payload, :description, :name)
+      params.require(:agent).permit(:interval, :slug, :user_id, :agent_type_id,
+                                    :payload, :description, :name)
     end
 end

@@ -13,6 +13,6 @@ class API::V1::AgentTypesController < API::BaseController
 
   private
     def set_agent_type
-      @agent_type = AgentType.find(params[:id])
+      @agent_type = AgentType.friendly.find(params[:id])
     end
 end

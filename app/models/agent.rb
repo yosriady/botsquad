@@ -1,6 +1,7 @@
 # Agents have singular jobs
 class Agent < ActiveRecord::Base
-  enum interval: %w( week day hour )
+
+  validates :interval, numericality: { only_integer: true, greater_than: 0 }
   enum type: %w( uptime screenshot )
 
   extend FriendlyId

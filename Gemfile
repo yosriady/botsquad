@@ -26,6 +26,7 @@ gem 'sidekiq'
 gem 'active_model_serializers'
 gem 'kaminari'
 gem 'friendly_id'
+gem 'json'
 
 # Active Record
 gem 'obfuscate_id'
@@ -54,6 +55,7 @@ group :development do
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'spring'
+  gem 'rails-erd'
 end
 
 group :development, :test do

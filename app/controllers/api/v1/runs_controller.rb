@@ -21,6 +21,6 @@ class API::V1::RunsController < API::BaseController
     end
 
     def set_agent
-      @agent = Agent.friendly.find(params[:agent_id])
+      @agent = Agent.friendly.find(params[:id])
     end
 end
