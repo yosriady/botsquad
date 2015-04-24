@@ -23,6 +23,7 @@ gem 'sidekiq'
 # gem 'diffy'
 
 # API
+gem 'rails-api'
 gem 'active_model_serializers'
 gem 'kaminari'
 gem 'friendly_id'
@@ -30,6 +31,7 @@ gem 'json'
 
 # Active Record
 gem 'obfuscate_id'
+gem 'aasm'
 
 # Validations
 gem 'validates_email_format_of'

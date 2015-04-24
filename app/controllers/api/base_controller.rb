@@ -1,5 +1,5 @@
-class API::BaseController < ApplicationController
-  protect_from_forgery with: :null_session
+class API::BaseController < ActionController::API
+  include ActionController::HttpAuthentication::Token::ControllerMethods
 
   private
 
