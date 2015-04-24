@@ -1,3 +1,3 @@
-class RunSerializer < ActiveModel::Serializer
+class RunSerializer < BaseSerializer
   attributes :id, :agent_id, :status, :result
 end

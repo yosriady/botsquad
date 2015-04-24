@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150423162412) do
+ActiveRecord::Schema.define(version: 20150424160958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "agent_types", force: :cascade do |t|
     t.string   "name",            limit: 255, null: false
@@ -42,10 +43,10 @@ ActiveRecord::Schema.define(version: 20150423162412) do
 
   add_index "agents", ["slug"], name: "index_agents_on_slug", unique: true, using: :btree
 
-  create_table "events", force: :cascade do |t|
-    t.integer  "run_id",                 null: false
+  create_table "events", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+    t.uuid     "run_id",                 null: false
     t.integer  "status",     default: 0, null: false
-    t.integer  "webhook_id",             null: false
+    t.uuid     "webhook_id",             null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
@@ -63,7 +64,7 @@ ActiveRecord::Schema.define(version: 20150423162412) do
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
-  create_table "runs", force: :cascade do |t|
+  create_table "runs", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.integer  "status",     default: 0, null: false
     t.integer  "agent_id",               null: false
     t.json     "response"
@@ -104,7 +105,7 @@ ActiveRecord::Schema.define(version: 20150423162412) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
-  create_table "webhooks", force: :cascade do |t|
+  create_table "webhooks", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.integer  "status",     default: 0, null: false
     t.integer  "agent_id",               null: false
     t.string   "url"

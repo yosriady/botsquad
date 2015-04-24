@@ -5,7 +5,7 @@ class API::V1::AgentsController < API::BaseController
   # GET /agents
   def index
     @agents = @user.agents.page(params[:page])
-    render json: @agents
+    render json: @agents, root: :agents
   end
 
   # GET /agents/1
@@ -16,13 +16,13 @@ class API::V1::AgentsController < API::BaseController
   # GET /agents/1/webhooks
   def webhooks
     @webhooks = @agent.webhooks
-    render json: @webhooks
+    render json: @webhooks, root: :webhooks
   end
 
   # GET /agents/1/runs
   def runs
     @runs = @agent.runs
-    render json: @runs
+    render json: @runs, root: :runs
   end
 
   # POST /agents
