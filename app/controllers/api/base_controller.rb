@@ -1,11 +1,20 @@
 class API::BaseController < ActionController::API
-  include ActionController::HttpAuthentication::Token::ControllerMethods
+  # Possible Errors
+  class APIKeyNotFoundError < StandardError; end
+
+  # Error Handling
+  rescue_from APIKeyNotFoundError, with: :api_key_not_found
 
   private
 
   def authenticate
-    authenticate_or_request_with_http_token do |token, options|
-      @user = User.where(api_key: token).first
-    end
+    api_key = request.headers['Botsquad-Api-Key']
+    @user = User.where(api_key: api_key).first if api_key
+
+    fail APIKeyNotFoundError unless api_key && @user
+  end
+
+  def api_key_not_found
+    render json: { message: 'API Key Not Found' }, status: :unauthorized
   end
 end

@@ -1,5 +1,5 @@
 class AgentSerializer < ActiveModel::Serializer
-  attributes :slug, :name, :agent_type, :description, :payload, :interval, :links
+  attributes :id, :slug, :name, :agent_type, :description, :payload, :interval, :links
 
   def agent_type
     {
