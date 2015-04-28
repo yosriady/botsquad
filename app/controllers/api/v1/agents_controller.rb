@@ -3,7 +3,7 @@ class API::V1::AgentsController < API::BaseController
 
   # GET /agents
   def index
-    @agents = @user.agents.page(params[:page])
+    @agents = @user.agents.page(params[:page]).per(params[:per_page])
     render json: @agents, root: :agents
   end
 
@@ -14,13 +14,13 @@ class API::V1::AgentsController < API::BaseController
 
   # GET /agents/1/webhooks
   def webhooks
-    @webhooks = @agent.webhooks
+    @webhooks = @agent.webhooks.page(params[:page]).per(params[:per_page])
     render json: @webhooks, root: :webhooks
   end
 
   # GET /agents/1/runs
   def runs
-    @runs = @agent.runs
+    @runs = @agent.runs.page(params[:page]).per(params[:per_page])
     render json: @runs, root: :runs
   end
 

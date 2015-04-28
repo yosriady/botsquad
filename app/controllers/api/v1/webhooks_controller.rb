@@ -9,18 +9,19 @@ class API::V1::WebhooksController < API::BaseController
 
   # GET /webhooks/1/agents
   def agents
-    @agents = @webhook.agents
+    @agents = @webhook.agents.page(params[:page]).per(params[:per_page])
     render json: @agents, root: :agents
   end
 
   # GET /webhooks/1/events
   def events
-    @events = @webhook.events
+    @events = @webhook.events.page(params[:page]).per(params[:per_page])
     render json: @events, root: :events
   end
 
   # POST /agents/:id/webhooks
   def create
+    # Note: this can be refactored with https://github.com/cypriss/mutations
     @webhook = Webhook.find_or_initialize_by(webhook_params.except(:id))
     @webhook.agents << @agent unless @webhook.agents.include?(@webhook)
 
