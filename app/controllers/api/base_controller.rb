@@ -1,9 +1,18 @@
 class API::BaseController < ActionController::API
+  before_action :authenticate
+
   # Possible Errors
   class APIKeyNotFoundError < StandardError; end
 
   # Error Handling
   rescue_from APIKeyNotFoundError, with: :api_key_not_found
+
+  # API Root
+  def index
+    render json: {
+      agents: api_v1_agents_url
+    }
+  end
 
   private
 
@@ -15,6 +24,6 @@ class API::BaseController < ActionController::API
   end
 
   def api_key_not_found
-    render json: { message: 'API Key Not Found' }, status: :unauthorized
+    render json: { message: 'API Key Not Found', information_link: 'http://botsquad.io/docs/errors' }, status: :unauthorized
   end
 end

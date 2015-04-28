@@ -3,5 +3,5 @@ class Run < ActiveRecord::Base
   belongs_to :agent
   has_many :events
 
-  enum status: %w( inprogress successful failed )
+  enum status: %w( queued successful failed )
 end

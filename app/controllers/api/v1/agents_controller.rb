@@ -1,6 +1,5 @@
 class API::V1::AgentsController < API::BaseController
   before_action :set_agent, only: [:show, :webhooks, :runs, :update, :destroy]
-  before_action :authenticate
 
   # GET /agents
   def index
@@ -27,8 +26,8 @@ class API::V1::AgentsController < API::BaseController
 
   # POST /agents
   def create
-    binding.pry
     @agent = @user.agents.new(agent_params)
+    @agent.agent_type = AgentType.find_by(slug: params[:agent_type])
 
     if @agent.save
       render json: @agent, status: 200, notice: 'Agent was successfully updated.'
@@ -62,7 +61,7 @@ class API::V1::AgentsController < API::BaseController
 
     # Only allow a trusted parameter "white list" through.
     def agent_params
-      params.require(:agent).permit(:interval, :slug, :user_id, :agent_type_id,
-                                    :payload, :description, :name)
+      params.permit(:interval, :slug, :user_id,
+                    :payload, :description, :name)
     end
 end

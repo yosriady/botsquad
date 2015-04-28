@@ -1,7 +1,6 @@
 class API::V1::WebhooksController < API::BaseController
-  before_action :set_agent
+  before_action :set_agent, only: [:index, :create]
   before_action :set_webhook, only: [:show, :destroy]
-  before_action :authenticate
 
   # GET /webhooks
   def index

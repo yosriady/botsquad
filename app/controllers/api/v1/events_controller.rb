@@ -1,2 +1,2 @@
-class API::V1::EventsController < ApplicationController
+class API::V1::EventsController < API::BaseController
 end

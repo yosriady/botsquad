@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150424160958) do
+ActiveRecord::Schema.define(version: 20150428055049) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,11 +37,19 @@ ActiveRecord::Schema.define(version: 20150424160958) do
     t.string   "description"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
-    t.string   "slug"
+    t.string   "slug",                                  null: false
     t.integer  "agent_type_id",                         null: false
   end
 
   add_index "agents", ["slug"], name: "index_agents_on_slug", unique: true, using: :btree
+
+  create_table "agents_webhooks", id: false, force: :cascade do |t|
+    t.uuid    "webhook_id"
+    t.integer "agent_id"
+  end
+
+  add_index "agents_webhooks", ["agent_id"], name: "index_agents_webhooks_on_agent_id", using: :btree
+  add_index "agents_webhooks", ["webhook_id"], name: "index_agents_webhooks_on_webhook_id", using: :btree
 
   create_table "events", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.uuid     "run_id",                 null: false
@@ -107,7 +115,6 @@ ActiveRecord::Schema.define(version: 20150424160958) do
 
   create_table "webhooks", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.integer  "status",     default: 0, null: false
-    t.integer  "agent_id",               null: false
     t.string   "url"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false

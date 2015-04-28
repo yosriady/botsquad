@@ -1,7 +1,6 @@
 class API::V1::RunsController < API::BaseController
-  before_action :set_agent
+  before_action :set_agent, only: [:index]
   before_action :set_run, only: [:show]
-  before_action :authenticate
 
   # GET /runs
   def index

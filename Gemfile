@@ -31,6 +31,7 @@ gem 'json'
 
 # Active Record
 gem 'obfuscate_id'
+gem 'haikunator'
 gem 'aasm'
 
 # Validations

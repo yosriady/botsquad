@@ -84,6 +84,7 @@ GEM
       activerecord (>= 4.0.0)
     globalid (0.3.4)
       activesupport (>= 4.1.0)
+    haikunator (1.1.0)
     hike (1.2.3)
     hitimes (1.2.2)
     httparty (0.13.3)
@@ -237,6 +238,7 @@ DEPENDENCIES
   devise
   dotenv-rails
   friendly_id
+  haikunator
   jquery-rails
   json
   kaminari

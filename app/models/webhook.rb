@@ -1,5 +1,5 @@
 class Webhook < ActiveRecord::Base
-  belongs_to :agent
+  has_and_belongs_to_many :agents
   has_many :events
 
   enum status: %w( unverified active disabled )
