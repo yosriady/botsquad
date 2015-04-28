@@ -9,16 +9,22 @@ Rails.application.routes.draw do
 
       resources :agents, only: [:index, :show, :create, :update, :destroy] do
         member do
-          resources :webhooks, only: [:index, :create]
-          resources :runs, only: [:index]
+          get :webhooks
+          resources :webhooks, only: [:create]
+          get :runs
         end
       end
 
       resources :webhooks, only: [:show, :destroy] do
-        resources :events, only: [:index]
+        member do
+          get :agents
+          get :events
+        end
       end
       resources :runs, only: [:show] do
-        resources :events, only: [:index]
+        member do
+          resources :events, only: [:index], as: :run_events
+        end
       end
       resources :agent_types, only: [:index, :show]
       resources :events, only: [:show]

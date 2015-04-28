@@ -31,7 +31,8 @@ class API::V1::AgentsController < API::BaseController
     @agent.agent_type = AgentType.find_by(slug: agent_params[:agent_type])
 
     if @agent.save
-      render json: @agent, status: 200, notice: 'Agent was successfully updated.'
+      render json: @agent, status: 200,
+             notice: 'Agent was successfully updated.'
     else
       binding.pry
       fail UnprocessableEntityError, @agent.errors.full_messages.to_sentence
@@ -41,7 +42,8 @@ class API::V1::AgentsController < API::BaseController
   # PATCH/PUT /agents/1
   def update
     if @agent.update(agent_params)
-      render json: @agent, status: 200, notice: 'Agent was successfully updated.'
+      render json: @agent, status: 200,
+             notice: 'Agent was successfully updated.'
     else
       fail UnprocessableEntityError, @agent.errors.full_messages.to_sentence
     end
@@ -50,19 +52,21 @@ class API::V1::AgentsController < API::BaseController
   # DELETE /agents/1
   def destroy
     if @agent.destroy
-      render json: @agent, status: 200, notice: 'Agent was successfully destroyed.'
+      render json: @agent, status: 200,
+             notice: 'Agent was successfully destroyed.'
     else
       fail UnprocessableEntityError, @agent.errors.full_messages.to_sentence
     end
   end
 
   private
-    def set_agent
-      @agent = Agent.find_by(slug: agent_params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def agent_params
-      params.permit(:id, :interval, :agent_type, :payload, :description, :name)
-    end
+  def set_agent
+    @agent = Agent.find_by(slug: agent_params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def agent_params
+    params.permit(:id, :payload, :description, :name, :interval, :agent_type)
+  end
 end

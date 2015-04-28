@@ -15,9 +15,9 @@ class AgentSerializer < BaseSerializer
 
   def links
     l = []
-    l << { href: api_v1_agent_url(object),    rel: :self,       method: :GET }
-    l << { href: api_v1_webhooks_url(object), rel: :webhooks,   method: :GET }
-    l << { href: api_v1_runs_url(object),     rel: :runs,       method: :GET }
+    l << { href: api_v1_agent_url(object),          rel: :self,       method: :GET }
+    l << { href: webhooks_api_v1_agent_url(object), rel: :webhooks,   method: :GET }
+    l << { href: runs_api_v1_agent_url(object),     rel: :runs,       method: :GET }
     l
   end
 end

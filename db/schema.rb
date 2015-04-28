@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150428061411) do
+ActiveRecord::Schema.define(version: 20150428104030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20150428061411) do
   end
 
   add_index "agents_webhooks", ["agent_id"], name: "index_agents_webhooks_on_agent_id", using: :btree
+  add_index "agents_webhooks", ["webhook_id", "agent_id"], name: "index_agents_webhooks_on_webhook_id_and_agent_id", using: :btree
   add_index "agents_webhooks", ["webhook_id"], name: "index_agents_webhooks_on_webhook_id", using: :btree
 
   create_table "events", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|

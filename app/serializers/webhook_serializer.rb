@@ -1,3 +1,11 @@
 class WebhookSerializer < BaseSerializer
-  attributes :id, :agent_id, :status, :url, :created_at, :modified_at
+  attributes :id, :status, :url, :created_at, :updated_at, :links
+
+  def links
+    l = []
+    l << { href: api_v1_webhook_url(object),        rel: :self,    method: :GET }
+    l << { href: agents_api_v1_webhook_url(object), rel: :agents,  method: :GET }
+    l << { href: events_api_v1_webhook_url(object), rel: :events,  method: :GET }
+    l
+  end
 end
