@@ -11,6 +11,7 @@ Rails.application.routes.draw do
         member do
           get :webhooks
           resources :webhooks, only: [:create]
+          delete 'webhooks/:webhook_id' => 'webhooks#unlink'
           get :runs
         end
       end

@@ -1,11 +1,6 @@
 class API::V1::WebhooksController < API::BaseController
-  before_action :set_agent, only: [:index, :create]
+  before_action :set_agent, only: [:create, :unlink]
   before_action :set_webhook, only: [:show, :agents, :events, :destroy]
-
-  # GET /webhooks
-  def index
-    render json: @agent.webhooks, root: :webhooks
-  end
 
   # GET /webhooks/1
   def show
@@ -24,14 +19,27 @@ class API::V1::WebhooksController < API::BaseController
     render json: @events, root: :events
   end
 
-  # POST /webhooks
+  # POST /agents/:id/webhooks
   def create
     @webhook = Webhook.find_or_initialize_by(webhook_params.except(:id))
-    @webhook.agents << @agent
+    @webhook.agents << @agent unless @webhook.agents.include?(@webhook)
 
     if @webhook.save
       render json: @webhook, status: 200,
-             notice: 'Webhook was successfully updated.'
+             notice: 'Webhook was successfully added.'
+    else
+      fail UnprocessableEntityError, @webhook.errors.full_messages.to_sentence
+    end
+  end
+
+  # DELETE /agents/:id/webhooks/:id
+  def unlink
+    @webhook = Webhook.find_by(id: webhook_params[:webhook_id])
+    return unless @webhook
+
+    if @webhook.agents.delete(@agent)
+      render json: @webhook, status: 200,
+             notice: 'Webhook was successfully unlinked.'
     else
       fail UnprocessableEntityError, @webhook.errors.full_messages.to_sentence
     end
@@ -48,17 +56,17 @@ class API::V1::WebhooksController < API::BaseController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_webhook
-      @webhook = Webhook.find(params[:id])
-    end
 
-    def set_agent
-      @agent = Agent.find_by(slug: params[:id])
-    end
+  def set_webhook
+    @webhook = Webhook.find(params[:id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def webhook_params
-      params.permit(:id, :url)
-    end
+  def set_agent
+    @agent = Agent.find_by(slug: params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def webhook_params
+    params.permit(:id, :webhook_id, :url)
+  end
 end
