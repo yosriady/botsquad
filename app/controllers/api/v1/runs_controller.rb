@@ -5,7 +5,7 @@ class API::V1::RunsController < API::BaseController
   # GET /runs
   def index
     @runs = Run.page(params[:page])
-    render json: @runs
+    render json: @runs, root: :runs
   end
 
   # GET /runs/1
@@ -20,6 +20,6 @@ class API::V1::RunsController < API::BaseController
     end
 
     def set_agent
-      @agent = Agent.friendly.find(params[:id])
+      @agent = Agent.find_by(slug: params[:id])
     end
 end
