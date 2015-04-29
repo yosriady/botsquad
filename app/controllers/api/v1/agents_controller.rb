@@ -31,8 +31,7 @@ class API::V1::AgentsController < API::BaseController
     @agent.agent_type = AgentType.find_by(slug: agent_params[:agent_type])
 
     if @agent.save
-      render json: @agent, status: 200,
-             notice: 'Agent was successfully updated.'
+      render json: @agent, status: 201
     else
       binding.pry
       fail UnprocessableEntityError, @agent.errors.full_messages.to_sentence
@@ -42,8 +41,7 @@ class API::V1::AgentsController < API::BaseController
   # PATCH/PUT /agents/1
   def update
     if @agent.update(agent_params)
-      render json: @agent, status: 200,
-             notice: 'Agent was successfully updated.'
+      render json: @agent, status: 200
     else
       fail UnprocessableEntityError, @agent.errors.full_messages.to_sentence
     end
@@ -52,8 +50,7 @@ class API::V1::AgentsController < API::BaseController
   # DELETE /agents/1
   def destroy
     if @agent.destroy
-      render json: @agent, status: 200,
-             notice: 'Agent was successfully destroyed.'
+      render json: @agent, status: 200
     else
       fail UnprocessableEntityError, @agent.errors.full_messages.to_sentence
     end
@@ -63,6 +60,7 @@ class API::V1::AgentsController < API::BaseController
 
   def set_agent
     @agent = Agent.find_by(slug: agent_params[:id])
+    fail NotFoundError, 'Agent Not Found' unless @agent
   end
 
   # Only allow a trusted parameter "white list" through.

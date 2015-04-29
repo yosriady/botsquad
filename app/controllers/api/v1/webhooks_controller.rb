@@ -26,8 +26,7 @@ class API::V1::WebhooksController < API::BaseController
     @webhook.agents << @agent unless @webhook.agents.include?(@webhook)
 
     if @webhook.save
-      render json: @webhook, status: 200,
-             notice: 'Webhook was successfully added.'
+      render json: @webhook, status: 201
     else
       fail UnprocessableEntityError, @webhook.errors.full_messages.to_sentence
     end
@@ -39,8 +38,8 @@ class API::V1::WebhooksController < API::BaseController
     return unless @webhook
 
     if @webhook.agents.delete(@agent)
-      render json: @webhook, status: 200,
-             notice: 'Webhook was successfully unlinked.'
+      render json: @webhook,
+             status: 200
     else
       fail UnprocessableEntityError, @webhook.errors.full_messages.to_sentence
     end
@@ -49,8 +48,8 @@ class API::V1::WebhooksController < API::BaseController
   # DELETE /webhooks/1
   def destroy
     if @webhook.destroy
-      render json: @webhook, status: 200,
-             notice: 'Webhook was successfully destroyed.'
+      render json: @webhook,
+             status: 200
     else
       fail UnprocessableEntityError, @webhook.errors.full_messages.to_sentence
     end
@@ -59,11 +58,13 @@ class API::V1::WebhooksController < API::BaseController
   private
 
   def set_webhook
-    @webhook = Webhook.find(params[:id])
+    @webhook = Webhook.find_by(id: params[:id])
+    fail NotFoundError, 'Webhook Not Found' unless @webhook
   end
 
   def set_agent
     @agent = Agent.find_by(slug: params[:id])
+    fail NotFoundError, 'Agent Not Found' unless @agent
   end
 
   # Only allow a trusted parameter "white list" through.

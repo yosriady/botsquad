@@ -15,5 +15,6 @@ class API::V1::AgentTypesController < API::BaseController
   private
     def set_agent_type
       @agent_type = AgentType.friendly.find(params[:id])
+      fail NotFoundError, 'Agent Type Not Found' unless @agent_type
     end
 end

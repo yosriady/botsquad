@@ -1,6 +1,6 @@
 class AgentTypeSerializer < BaseSerializer
   attributes :id, :name, :description, :sample_payload, :sample_response,
-             :job_type, :script_path, :created_at, :updated_at, :links
+             :created_at, :updated_at, :links
 
   def id
     object.slug
