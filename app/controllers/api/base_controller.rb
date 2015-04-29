@@ -21,8 +21,8 @@ class API::BaseController < ActionController::API
   # API Root
   def index
     render json: {
-      agents: api_v1_agents_url,
-      agent_types: api_v1_agent_types_url
+      'agents': api_v1_agents_url,
+      'agent-types': api_v1_agent_types_url
     }
   end
 

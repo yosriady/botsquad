@@ -4,7 +4,7 @@ class API::V1::AgentTypesController < API::BaseController
   # GET /agent-types
   def index
     @agent_types = AgentType.page(params[:page]).per(params[:per_page])
-    render json: @agent_types, root: :agent_types
+    render json: @agent_types, root: 'agent-types'
   end
 
   # GET /agent-types/:slug

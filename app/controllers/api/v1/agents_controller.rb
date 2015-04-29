@@ -27,8 +27,8 @@ class API::V1::AgentsController < API::BaseController
   # POST /agents
   def create
     agent_params[:user_id] = @user.id
-    @agent = @user.agents.new(agent_params.except(:agent_type))
-    @agent.agent_type = AgentType.find_by(slug: agent_params[:agent_type])
+    @agent = @user.agents.new(agent_params.except('agent-type'))
+    @agent.agent_type = AgentType.find_by(slug: agent_params['agent-type'])
 
     if @agent.save
       render json: @agent, status: 201
@@ -65,6 +65,6 @@ class API::V1::AgentsController < API::BaseController
 
   # Only allow a trusted parameter "white list" through.
   def agent_params
-    params.permit(:id, :payload, :description, :name, :interval, :agent_type)
+    params.permit(:id, :payload, :description, :name, :interval, 'agent-type')
   end
 end

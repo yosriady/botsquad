@@ -27,7 +27,7 @@ Rails.application.routes.draw do
           resources :events, only: [:index], as: :run_events
         end
       end
-      resources :agent_types, only: [:index, :show]
+      resources 'agent-types', only: [:index, :show], as: :agent_types, controller: :agent_types
       resources :events, only: [:show]
     end
   end
