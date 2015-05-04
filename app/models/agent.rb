@@ -5,6 +5,9 @@ class Agent < ActiveRecord::Base
 
   validates :interval, numericality: { only_integer: true, greater_than: 0 }
   enum type: %w( uptime screenshot )
+  validates :agent_type, presence: true
+  validates :interval, presence: true
+  validates :payload, presence: true
 
   belongs_to :user
   belongs_to :agent_type

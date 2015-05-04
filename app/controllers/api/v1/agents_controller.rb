@@ -29,11 +29,12 @@ class API::V1::AgentsController < API::BaseController
     agent_params[:user_id] = @user.id
     @agent = @user.agents.new(agent_params.except('agent-type'))
     @agent.agent_type = AgentType.find_by(slug: agent_params['agent-type'])
-
+    # TODO: Refactor + Add Agent Type Payload Validation
+    # Do we need a JSON DSL for this?
+    @agent.payload = JSON(params[:payload]) if params[:payload]
     if @agent.save
       render json: @agent, status: 201
     else
-      binding.pry
       fail UnprocessableEntityError, @agent.errors.full_messages.to_sentence
     end
   end
@@ -65,6 +66,6 @@ class API::V1::AgentsController < API::BaseController
 
   # Only allow a trusted parameter "white list" through.
   def agent_params
-    params.permit(:id, :payload, :description, :name, :interval, 'agent-type')
+    params.permit(:id, :description, :name, :interval, 'agent-type')
   end
 end

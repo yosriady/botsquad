@@ -3,6 +3,7 @@ class Webhook < ActiveRecord::Base
   has_many :events
 
   enum status: %w( unverified active disabled )
+  validates :url, presence: true, url: true
 
   def verify(challenge_response)
     # TODO: https://developers.braintreepayments.com/ios+ruby/guides/webhooks/create#destination-verification

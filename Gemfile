@@ -30,11 +30,12 @@ gem 'friendly_id'
 gem 'json'
 
 # Active Record
-gem 'obfuscate_id'
 gem 'haikunator'
 gem 'aasm'
+gem 'validate_url'
 
 # Validations
+gem 'json-schema'
 gem 'validates_email_format_of'
 
 # Frontend
