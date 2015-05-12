@@ -2,32 +2,34 @@
 class BaseJob < ActiveJob::Base
   queue_as :default
 
-  before_enqueue do |job|
-    # Validate arguments
-    p job
-  end
+  # Possible Errors
+  class ExecutionError < StandardError; end
+  class ValidationError < StandardError; end
 
-  around_perform do |job, block|
-    # Create Run instance before perform
-    p job
-    block.call
-    # Set Run status depending on call success/error
-  end
+  # Error Handling
+  rescue_from ExecutionError, with: :execution_error
+  rescue_from ValidationError, with: :validation_error
 
   def perform(*args)
     p "#{self.class.name}: I'm performing my job with arguments: #{args.inspect}"
+    output = []
 
     require 'phantomjs'
-    p Phantomjs.path
-    Phantomjs.run(script_path) { |line| puts line }
+    binding.pry
+    Phantomjs.run(args[:script_path], args[:payload].to_json) { |line| output << line }
+    # p output
+    # p "triggered"
+    Run.create(agent_id: args[:agent_id], response: JSON({result: output}))
   end
 
-  # Methods below may be overriden by subclasses
-  def script_path
-    'public/js/pageload.js'
+  def execution_error
+    p "Execution Error!"
+    # retry_job wait: 5.minutes, queue: :low_priority
+    # TODO
   end
 
-  def default_args
-    '{}'
+  def validation_error
+    p "Validation Error!"
+    # TODO
   end
 end

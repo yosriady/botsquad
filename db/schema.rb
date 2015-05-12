@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150504165354) do
+ActiveRecord::Schema.define(version: 20150512101043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20150504165354) do
     t.string   "script_path",                 null: false
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
-    t.json     "payload_schema"
+    t.json     "payload_schema",              null: false
   end
 
   create_table "agents", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
@@ -74,10 +74,10 @@ ActiveRecord::Schema.define(version: 20150504165354) do
 
   create_table "runs", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.integer  "status",     default: 0, null: false
-    t.integer  "agent_id",               null: false
     t.json     "response"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.uuid     "agent_id",               null: false
   end
 
   create_table "signups", force: :cascade do |t|

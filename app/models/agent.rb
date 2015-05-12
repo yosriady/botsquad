@@ -1,5 +1,7 @@
 # Agents have singular jobs
 class Agent < ActiveRecord::Base
+  after_create :enqueue_job
+
   before_validation :generate_slug, on: :create
   validates :slug, uniqueness: true, presence: true
 
@@ -8,6 +10,7 @@ class Agent < ActiveRecord::Base
   validates :agent_type, presence: true
   validates :interval, presence: true
   validates :payload, presence: true
+  validate :payload_follows_schema
 
   belongs_to :user
   belongs_to :agent_type
@@ -26,7 +29,18 @@ class Agent < ActiveRecord::Base
     end
   end
 
-  def execute
-    # TODO: enqueue job
+  def payload_follows_schema
+    valid = !agent_type.payload_schema? || (agent_type.payload_schema? && JSON::Validator.validate(agent_type.payload_schema, payload))
+    errors.add(:payload, 'is invalid for specified payload_schema') unless valid
+  end
+
+  def enqueue_job
+    return unless agent_type.job_type.constantize
+    job_params = {
+      agent_id: id,
+      payload: payload,
+      script_path: agent_type.script_path
+    }
+    agent_type.job_type.constantize.perform_later(job_params)
   end
 end
