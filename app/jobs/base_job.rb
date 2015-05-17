@@ -12,24 +12,39 @@ class BaseJob < ActiveJob::Base
 
   def perform(*args)
     p "#{self.class.name}: I'm performing my job with arguments: #{args.inspect}"
+    params = args[0]
     output = []
 
-    require 'phantomjs'
-    binding.pry
-    Phantomjs.run(args[:script_path], args[:payload].to_json) { |line| output << line }
-    # p output
-    # p "triggered"
-    Run.create(agent_id: args[:agent_id], response: JSON({result: output}))
+    p "Creating run for agent id: #{params[:agent_id]}"
+    run = Run.create(agent_id: params[:agent_id])
+    p "Created run with id: #{run.id}"
+
+    Phantomjs.run(params[:script_path],
+                  params[:payload].to_json) { |line| output << line }
+
+    # TODO: add validation for phantomjs.run failures,
+    # populate Run status appropriately
+
+    run = Run.find(run.id)
+    run.status = Run.statuses[:successful]
+    run.response = JSON(output[0])
+    run.save
+
+    p "Updated run with id: #{run.id}"
   end
+
+  protected
 
   def execution_error
     p "Execution Error!"
+    binding.pry
     # retry_job wait: 5.minutes, queue: :low_priority
     # TODO
   end
 
   def validation_error
     p "Validation Error!"
+    binding.pry
     # TODO
   end
 end

@@ -19,6 +19,9 @@ gem 'raygun4ruby'
 gem 'phantomjs'
 gem 'sidekiq'
 
+# Sidekiq Web UI
+gem 'sinatra', :require => nil
+
 # Agent Supporting Libs
 # gem 'diffy'
 
@@ -28,6 +31,7 @@ gem 'active_model_serializers', '0.10.0.rc1'
 gem 'kaminari'
 gem 'friendly_id'
 gem 'json'
+gem 'rest-client'
 
 # Active Record
 gem 'haikunator'

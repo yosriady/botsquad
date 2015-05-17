@@ -1,3 +1,3 @@
 class RunSerializer < BaseSerializer
-  attributes :id, :agent_id, :status, :result
+  attributes :id, :agent_id, :status, :response
 end

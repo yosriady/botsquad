@@ -1,10 +1,6 @@
 var page = require('webpage').create();
 var args = require('system').args;
-// console.log('Hello, world!');
-// console.log(args);
-// console.log(args[1]);
 var params = JSON.parse(args[1]);
-// console.log(params['url']);
 
 t = Date.now();
 page.open(params['url'], function (status) {
