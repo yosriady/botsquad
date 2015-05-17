@@ -6,6 +6,5 @@ class WebhookSerializer < BaseSerializer
     l << { href: api_v1_webhook_url(object),        rel: :self,    method: :GET }
     l << { href: agents_api_v1_webhook_url(object), rel: :agents,  method: :GET }
     l << { href: events_api_v1_webhook_url(object), rel: :events,  method: :GET }
-    l
   end
 end
