@@ -1,12 +1,12 @@
 # Agents have singular jobs
 class Agent < ActiveRecord::Base
-  after_create :enqueue_job
+  after_create :enqueue_job # Should trigger everytime status is set to active
 
   before_validation :generate_slug, on: :create
   validates :slug, uniqueness: true, presence: true
 
   validates :interval, numericality: { only_integer: true, greater_than: 0 }
-  enum type: %w( uptime screenshot )
+  enum status: %w( active disabled )
   validates :agent_type, presence: true
   validates :interval, presence: true
   validates :payload, presence: true
