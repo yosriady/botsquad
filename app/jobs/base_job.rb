@@ -33,6 +33,18 @@ class BaseJob < ActiveJob::Base
     p "Updated run with id: #{run.id}"
   end
 
+  after_perform do |job|
+     p "Enqueueing next recurring job after job #{job.id}"
+     params = job.args[0]
+     job_params = {
+       agent_id: params.agent_id,
+       payload: params.payload,
+       script_path: params.agent_type.script_path
+     }
+     binding.pry
+     self.class.set(wait: interval.minutes).perform_later(job_params)
+   end
+
   protected
 
   def execution_error

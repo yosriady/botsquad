@@ -11,11 +11,50 @@ class Agent < ActiveRecord::Base
   validates :interval, presence: true
   validates :payload, presence: true
   validate :payload_follows_schema
+  # TODO: validate that active agents have associated jobs, and vice versa
 
   belongs_to :user
   belongs_to :agent_type
   has_many :runs
   has_and_belongs_to_many :webhooks
+
+  include AASM
+  aasm column: :status, no_direct_assignment: true do
+    state :active, initial: true
+    state :disabled
+
+    event :enable do
+      transitions from: :active, to: :disabled
+      after do
+        enqueue_job
+      end
+    end
+
+    event :disable do
+      transitions from: :disabled, to: :active
+      after do
+        clear_jobs
+      end
+    end
+  end
+
+  def clear_jobs
+    require 'sidekiq/api'
+    queue = Sidekiq::Queue.new
+    queue.each do |job|
+      job.delete if job.args && (job.args.agent_id == id)
+    end
+  end
+
+  def enqueue_job
+    return unless agent_type.job_type.constantize
+    job_params = {
+      agent_id: id,
+      payload: payload,
+      script_path: agent_type.script_path
+    }
+    agent_type.job_type.constantize.perform_later(job_params)
+  end
 
   # Used in friendly URL generation
   def to_param
@@ -32,15 +71,5 @@ class Agent < ActiveRecord::Base
   def payload_follows_schema
     valid = !agent_type.payload_schema? || (agent_type.payload_schema? && JSON::Validator.validate(agent_type.payload_schema, payload))
     errors.add(:payload, 'is invalid for specified payload_schema') unless valid
-  end
-
-  def enqueue_job
-    return unless agent_type.job_type.constantize
-    job_params = {
-      agent_id: id,
-      payload: payload,
-      script_path: agent_type.script_path
-    }
-    agent_type.job_type.constantize.perform_later(job_params)
   end
 end

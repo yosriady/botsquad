@@ -62,7 +62,6 @@ group :development do
   gem 'letter_opener'
   gem 'pry-rails'
   gem 'pry-remote'
-  gem 'spring'
   gem 'rails-erd'
 end
 
