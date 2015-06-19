@@ -3,6 +3,7 @@ class Webhook < ActiveRecord::Base
   has_many :events
 
   enum status: %w( unverified active disabled )
+  bitmask :accept_runs, as: [:successful, :failed]
   validates :url, presence: true, url: true
 
   def verify(challenge_response)
