@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable,
          :lockable
+
   before_create :generate_api_key
 
   protected

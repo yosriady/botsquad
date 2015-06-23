@@ -1,22 +1,22 @@
 # Agents have singular jobs
 class Agent < ActiveRecord::Base
-  after_create :enqueue_job # Should trigger everytime status is set to active
+  belongs_to :user
+  belongs_to :agent_type
+  has_many :runs
+  has_and_belongs_to_many :webhooks
 
-  before_validation :generate_slug, on: :create
-  validates :slug, uniqueness: true, presence: true
-
-  validates :interval, numericality: { only_integer: true, greater_than: 0 }
   enum status: %w( active disabled )
+
+  after_create :enqueue_job # Should trigger everytime status is set to active
+  before_validation :generate_slug, on: :create
+
+  validates :slug, uniqueness: true, presence: true
+  validates :interval, numericality: { only_integer: true, greater_than: 0 }
   validates :agent_type, presence: true
   validates :interval, presence: true
   validates :payload, presence: true
   validate :payload_follows_schema
   # TODO: validate that active agents have associated jobs, and vice versa
-
-  belongs_to :user
-  belongs_to :agent_type
-  has_many :runs
-  has_and_belongs_to_many :webhooks
 
   include AASM
   aasm column: :status, no_direct_assignment: true do
@@ -42,18 +42,20 @@ class Agent < ActiveRecord::Base
     require 'sidekiq/api'
     queue = Sidekiq::Queue.new
     queue.each do |job|
-      job.delete if job.args && (job.args.agent_id == id)
+      is_own_job = (job.args.agent_id == id)
+      job.delete if job.args && is_own_job
     end
   end
 
   def enqueue_job
-    return unless agent_type.job_type.constantize
+    return unless agent_type.valid?
     job_params = {
       agent_id: id,
       payload: payload,
       script_path: agent_type.script_path
     }
-    agent_type.job_type.constantize.perform_later(job_params)
+    job = agent_type.job_type.constantize
+    job.perform_later(job_params)
   end
 
   # Used in friendly URL generation

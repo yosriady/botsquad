@@ -29,7 +29,7 @@ class API::BaseController < ActionController::API
   private
 
   def authenticate
-    api_key = request.headers['Botsquad-Api-Key']
+    api_key = request.headers['X-Api-Key']
     @user = User.where(api_key: api_key).first if api_key
 
     fail UnauthorizedError, 'API Key Not Found' unless api_key && @user

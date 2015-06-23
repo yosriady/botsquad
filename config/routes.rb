@@ -31,7 +31,11 @@ Rails.application.routes.draw do
         end
       end
       resources 'agent-types', only: [:index, :show], as: :agent_types, controller: :agent_types
-      resources :events, only: [:show]
+      resources :events, only: [:show] do
+        member do
+          post :resend
+        end
+      end
     end
   end
 

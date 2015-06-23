@@ -1,5 +1,5 @@
 # Base job class
-class BaseJob < ActiveJob::Base
+class PhantomJob < ActiveJob::Base
   queue_as :default
 
   # Possible Errors
