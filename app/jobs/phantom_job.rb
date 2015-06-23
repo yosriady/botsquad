@@ -33,14 +33,13 @@ class PhantomJob < ActiveJob::Base
   end
 
   after_perform do |job|
-    params = job.args[0]
-    logger.debug "Enqueueing next recurring job for job #{job.job_id} for agent id #{params.agent_id}"
-    job_params = {
-     agent_id: params.agent_id,
-     payload: params.payload,
-     script_path: params.agent_type.script_path
-    }
-    self.class.set(wait: interval.minutes).perform_later(job_params)
+    params = job.arguments[0]
+    agent = Agent.find(params[:agent_id])
+    logger.debug "Enqueueing next recurring job for job #{job.job_id} for agent id #{params[:agent_id]}"
+    self.class.set(wait: agent.interval.minutes).perform_later(params)
+
+    # TODO: Alternatively, we can do:
+    # (wait_until: Date.tomorrow.noon)
    end
 
   protected

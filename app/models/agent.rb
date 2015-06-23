@@ -19,20 +19,21 @@ class Agent < ActiveRecord::Base
   validate :payload_follows_schema
   # TODO: validate that active agents have associated jobs, and vice versa
 
+  # Note: call disable! and enable! to save the change
   include AASM
-  aasm column: :status, no_direct_assignment: true do
+  aasm column: :status, enum: true, no_direct_assignment: true do
     state :active, initial: true
     state :disabled
 
     event :enable do
-      transitions from: :active, to: :disabled
+      transitions from: :disabled, to: :active
       after do
         enqueue_job
       end
     end
 
     event :disable do
-      transitions from: :disabled, to: :active
+      transitions from: :active, to: :disabled
       after do
         clear_jobs
       end
