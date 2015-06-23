@@ -8,6 +8,7 @@ class Agent < ActiveRecord::Base
   enum status: %w( active disabled )
 
   after_create :enqueue_job # Should trigger everytime status is set to active
+  before_destroy :clear_jobs
   before_validation :generate_slug, on: :create
 
   validates :slug, uniqueness: true, presence: true
@@ -38,30 +39,44 @@ class Agent < ActiveRecord::Base
     end
   end
 
+  def jobs
+    require 'sidekiq/api'
+    queue = Sidekiq::Queue.new
+    jobs = []
+    queue.each do |job|
+      is_my_job = (job.args[0]['arguments'][0]['agent_id'] == id)
+      jobs << job if is_my_job
+    end
+    jobs
+  end
+
   def clear_jobs
     require 'sidekiq/api'
     queue = Sidekiq::Queue.new
     queue.each do |job|
-      is_own_job = (job.args.agent_id == id)
-      job.delete if job.args && is_own_job
+      is_my_job = (job.args[0]['arguments'][0]['agent_id'] == id)
+      job.delete if job.args && is_my_job
     end
+    true
   end
 
   def enqueue_job
     return unless agent_type.valid?
-    job_params = {
+    params = {
       agent_id: id,
       payload: payload,
       script_path: agent_type.script_path
     }
     job = agent_type.job_type.constantize
-    job.perform_later(job_params)
+    job.perform_later(params)
   end
 
   # Used in friendly URL generation
   def to_param
     slug
   end
+
+  protected
 
   def generate_slug
     self.slug = loop do

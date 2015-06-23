@@ -37,6 +37,7 @@ gem 'rest-client'
 gem 'haikunator'
 gem 'aasm'
 gem 'validate_url'
+gem 'bitmask_attributes'
 
 # Validations
 gem 'json-schema'

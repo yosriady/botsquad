@@ -11,13 +11,13 @@ class PhantomJob < ActiveJob::Base
   rescue_from ValidationError, with: :validation_error
 
   def perform(*args)
-    p "#{self.class.name}: I'm performing my job with arguments: #{args.inspect}"
+    logger.debug "#{self.class.name}: I'm performing my job with arguments: #{args.inspect}"
     params = args[0]
     output = []
 
-    p "Creating run for agent id: #{params[:agent_id]}"
+    logger.debug "Creating run for agent id: #{params[:agent_id]}"
     run = Run.create(agent_id: params[:agent_id])
-    p "Created run with id: #{run.id}"
+    logger.debug "Created run with id: #{run.id}"
 
     Phantomjs.run(params[:script_path],
                   params[:payload].to_json) { |line| output << line }
@@ -29,20 +29,18 @@ class PhantomJob < ActiveJob::Base
     run.status = Run.statuses[:successful]
     run.response = JSON(output[0])
     run.save
-
-    p "Updated run with id: #{run.id}"
+    logger.debug "Updated run with id: #{run.id}"
   end
 
   after_perform do |job|
-     p "Enqueueing next recurring job after job #{job.id}"
-     params = job.args[0]
-     job_params = {
-       agent_id: params.agent_id,
-       payload: params.payload,
-       script_path: params.agent_type.script_path
-     }
-     binding.pry
-     self.class.set(wait: interval.minutes).perform_later(job_params)
+    params = job.args[0]
+    logger.debug "Enqueueing next recurring job for job #{job.job_id} for agent id #{params.agent_id}"
+    job_params = {
+     agent_id: params.agent_id,
+     payload: params.payload,
+     script_path: params.agent_type.script_path
+    }
+    self.class.set(wait: interval.minutes).perform_later(job_params)
    end
 
   protected

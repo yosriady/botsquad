@@ -19,6 +19,8 @@ class AgentType < ActiveRecord::Base
   validate :sample_payload_follows_schema, if: :payload_schema?
   validate :validate_job_type, if: :job_type?
 
+  protected
+
   def validate_job_type
     unless job_type.constantize
       errors.add(:job_type, 'does not exist')
