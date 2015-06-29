@@ -10,6 +10,10 @@ html {
   padding: 50px;
 
   h1, h2 {
+    margin-bottom: 0px;
+  }
+
+  h2 {
     margin-top: 0px;
   }
 
@@ -51,7 +55,8 @@ html {
 }
 
 #signup {
-  padding-top: 60px;
+  padding-top: 0px;
+  padding-bottom: 40px;
 
   form {
     padding-left: 0px;
@@ -75,4 +80,12 @@ html {
 .col-centered{
     float: none;
     margin: 0 auto;
+}
+
+footer {
+  padding: 60px 0px;
+}
+
+.muted {
+  color: #999;
 }
